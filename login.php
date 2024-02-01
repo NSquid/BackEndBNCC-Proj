@@ -7,7 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $servername = "localhost";
     $username = "root";
     $password = "";
-    $dbname = "user";
+    $dbname = "attendance_system";
 
     $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -31,6 +31,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     } else {
         $error = "Invalid email or password";
+    }
+
+    if (isset($_POST['remember'])) {
+        setcookie('username', $_POST['username'], time() + (30 * 24 * 60 * 60));
+        setcookie('password', $_POST['password'], time() + (30 * 24 * 60 * 60));
+    } else {
+        if (isset($_COOKIE['username'])) {
+            setcookie('username', '', time() - 3600);
+        }
+        if (isset($_COOKIE['password'])) {
+            setcookie('password', '', time() - 3600);
+        }
     }
 
     $conn->close();
